@@ -1,6 +1,6 @@
 import streamlit as st
 from collections import deque
-import time
+
 class TaskQueue:
     def __init__(self):
         self.queue = deque()
@@ -30,9 +30,8 @@ class TaskQueue:
             return self.queue[0]
         return None
 
-
 def main():
-    st.title("Task Manager")
+    st.title("Task Queue Manager")
 
     if 'task_queue' not in st.session_state:
         st.session_state.task_queue = TaskQueue()
@@ -43,6 +42,7 @@ def main():
         if new_task:
             st.session_state.task_queue.add_task(new_task)
             st.success(f"Task '{new_task}' added to the queue!")
+            st.experimental_rerun()
         else:
             st.warning("Please enter a task before adding.")
 
@@ -52,6 +52,7 @@ def main():
         if tasks:
             st.session_state.task_queue.add_multiple_tasks(tasks)
             st.success(f"{len(tasks)} tasks added to the queue!")
+            st.rerun()
         else:
             st.warning("Please enter at least one task.")
 
@@ -67,12 +68,7 @@ def main():
         if not st.session_state.task_queue.is_empty():
             completed_task = st.session_state.task_queue.complete_task()
             st.success(f"Completed task: {completed_task}")
-
-            progress_bar = st.progress(0)
-            for i in range(100):
-                time.sleep(0.01)
-                progress_bar.progress(i + 1)
-            st.success("Task processing completed!")
+            st.rerun()
         else:
             st.warning("No tasks in the queue!")
 
@@ -89,7 +85,6 @@ def main():
             st.text(f"{i}. {task}")
     else:
         st.write("No tasks have been completed yet.")
-
 
 if __name__ == "__main__":
     main()
