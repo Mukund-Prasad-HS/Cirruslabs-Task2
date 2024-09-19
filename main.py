@@ -42,7 +42,7 @@ def main():
         if new_task:
             st.session_state.task_queue.add_task(new_task)
             st.success(f"Task '{new_task}' added to the queue!")
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.warning("Please enter a task before adding.")
 
